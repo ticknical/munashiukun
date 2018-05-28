@@ -1,0 +1,39 @@
+{
+  "name": "munashiukun",
+  "version": "1.0.0",
+  "description": "munashiukun",
+  "main": "index.js",
+  "scripts": {
+    "invoke": "dotenv-export >> ./.env_export && source ./.env_export && rm -rf ./.env_export && serverless invoke local",
+    "deploy": "dotenv-export >> ./.env_export && source ./.env_export && rm -rf ./.env_export && serverless deploy",
+    "deploy:function": "dotenv-export >> ./.env_export && source ./.env_export && rm -rf ./.env_export && serverless deploy function -f"
+  },
+  "author": "Tick <ticknical@perfectdark.jp>",
+  "license": "Apache-2.0",
+  "directories": {
+    "src": "./src"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^6.2.1",
+    "@slack/client": "^4.6.0",
+    "alexa-sdk": "^1.0.25",
+    "axios": "^0.18.0",
+    "chatwork-client": "^1.0.11",
+    "date-fns": "^1.29.0",
+    "eol": "^0.9.1",
+    "http-build-query": "^0.6.0",
+    "node-google-calendar": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "dotenv-export": "^2.0.0",
+    "serverless": "^1.31.0",
+    "serverless-webpack": "^5.2.0",
+    "webpack": "^4.19.0"
+  },
+  "private": true
+}

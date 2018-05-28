@@ -1,0 +1,9 @@
+.DS_Store
+.env
+npm-debug.log*
+.lambda
+.serverless
+.vscode
+.webpack
+node_modules
+build
