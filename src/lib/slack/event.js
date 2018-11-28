@@ -14,9 +14,9 @@ export default class Event
      */
     constructor(event)
     {
-		this.event  = event
+        this.event  = event
         this.intent = null
-	}
+    }
 
     /**
      * イベントの処理を実行する
@@ -61,6 +61,9 @@ export default class Event
         const Skill = await import(`skills/${name}`)
             .then(res => {
                 return res.Slack
+            })
+            .catch(err => {
+                resolve(this.response('指定されたスキルが見つかりませんでした...'))
             })
 
         return new Skill(this.event, this.intent)
