@@ -69,6 +69,7 @@ functions:
     description: line-munashiukun-bot
     handler: index.line
     environment:
+      TZ: Asia/Tokyo
       LINE_ACCESS_TOKEN: ${env:LINE_ACCESS_TOKEN}
       LINE_CHANNEL_SECRET: ${env:LINE_CHANNEL_SECRET}
       CHATBOT_APIKEY: ${env:CHATBOT_APIKEY}
@@ -87,6 +88,7 @@ functions:
     description: chatwork-munashiukun-bot
     handler: index.chatwork
     environment:
+      TZ: Asia/Tokyo
       CHATWORK_API_TOKEN: ${env:CHATWORK_API_TOKEN}
       CHATWORK_WEBHOOK_TOKEN: ${env:CHATWORK_WEBHOOK_TOKEN}
       CHATBOT_APIKEY: ${env:CHATBOT_APIKEY}
@@ -105,6 +107,7 @@ functions:
     description: slack-munashiukun-bot
     handler: index.slack
     environment:
+      TZ: Asia/Tokyo
       SLACK_TOKEN: ${env:SLACK_TOKEN}
       CHATBOT_APIKEY: ${env:CHATBOT_APIKEY}
       GOOGLE_CALENDER_ID: ${env:GOOGLE_CALENDER_ID}
@@ -122,6 +125,7 @@ functions:
     description: munashiukun-alexa-skills
     handler: index.alexa
     environment:
+      TZ: Asia/Tokyo
       ALEXA_SKILL_ID: ${env:ALEXA_SKILL_ID}
       GOOGLE_CALENDER_ID: ${env:GOOGLE_CALENDER_ID}
       GOOGLE_SERVICE_ACCOUNT_ID: ${env:GOOGLE_SERVICE_ACCOUNT_ID}
