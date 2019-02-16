@@ -4,9 +4,16 @@ import {format} from 'date-fns'
 import jaLocale from 'date-fns/locale/ja'
 import GoogleCalenderAPI from 'node-google-calendar'
 
+/**
+ * Googleのサービスアカウント情報
+ */
+const SERVICE_ACCOUNT = JSON.parse(
+    new Buffer(process.env.GOOGLE_SERVICE_ACCOUNT,'base64').toString()
+)
+
 const GoogleCalendar = new GoogleCalenderAPI({
-    key: process.env.GOOGLE_SERVICE_ACCOUNT_KEY.replace(/\\n/g, "\n"),
-    serviceAcctId: process.env.GOOGLE_SERVICE_ACCOUNT_ID,
+    key: SERVICE_ACCOUNT.private_key.replace(/\\n/g, "\n"),
+    serviceAcctId: SERVICE_ACCOUNT.client_email,
     calendarId: process.env.GOOGLE_CALENDER_ID,
     timezone: 'UTC+09:00'
 })
