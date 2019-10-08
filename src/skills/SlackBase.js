@@ -1,6 +1,7 @@
 "use strict";
 
 import Base from './Base'
+import { postMessage } from 'lib/slack/reply'
 
 /**
  * Slack用のベーススキル
@@ -10,14 +11,16 @@ export default class SlackBase extends Base
 {
     /**
      * constructor
-     * @param  {Object}  event  webhook event
-     * @param  {Object}  intent 言語解析の結果
+     * @param  {Object}  event   webhook event
+     * @param  {String}  message message
+     * @param  {Object}  intent  言語解析の結果
      */
-    constructor(event, intent)
+    constructor(event, message, intent)
     {
         super()
 
-        this.message = event.text.replace(`${event.trigger_word} `, "")
+        this.event   = event
+        this.message = message
         this.intent  = intent
 	}
 
@@ -30,6 +33,9 @@ export default class SlackBase extends Base
      */
     replyMsg(message)
     {
-        return message
+        return postMessage(
+            this.event.event.channel,
+            `<@${this.event.event.user}> ${message}`
+        )
     }
 }

@@ -8,12 +8,9 @@ import LINEEvent from 'lib/line/event'
 import {isVerificate as isCWVerificate} from 'lib/chatwork/functions'
 import ChatWorkEvent from 'lib/chatwork/event'
 
-import {isVerificate as isSlackVerificate} from 'lib/slack/functions'
 import SlackEvent from 'lib/slack/event'
 
 import alexa from 'alexa-sdk'
-
-import querystring from 'querystring'
 
 /**
  * LINE版むなしうくんのエンドポイント
@@ -22,7 +19,7 @@ import querystring from 'querystring'
  * @param  {Function} callback callback
  */
 module.exports.line = async (event, context, callback) => {
-    const post = JSON.parse(event.body)
+    const e = JSON.parse(event.body)
 
     // LINE以外からリクエストされた場合
     if (!isLineVerificate(event))
@@ -31,7 +28,7 @@ module.exports.line = async (event, context, callback) => {
         callback(new Error("Signature is invalidate!"))
     }
 
-    post.events.forEach(event => {
+    e.events.forEach(event => {
         new LINEEvent(event).process()
     })
 
@@ -45,7 +42,7 @@ module.exports.line = async (event, context, callback) => {
  * @param  {Function} callback callback
  */
 module.exports.chatwork = async (event, context, callback) => {
-    const post = JSON.parse(event.body)
+    const e = JSON.parse(event.body)
 
     // ChatWork以外からリクエストされた場合
     if (!isCWVerificate(event))
@@ -54,7 +51,7 @@ module.exports.chatwork = async (event, context, callback) => {
         callback(new Error("Signature is invalidate!"))
     }
 
-    new ChatWorkEvent(post).process()
+    new ChatWorkEvent(e).process()
 
     callback(null, "webhook end.")
 }
@@ -66,22 +63,34 @@ module.exports.chatwork = async (event, context, callback) => {
  * @param  {Function} callback callback
  */
 module.exports.slack = async (event, context, callback) => {
-    const post = querystring.parse(event.body)
+    const e = event.body
 
-    // Slack以外からリクエストされた場合
-    if (!isSlackVerificate(post))
+    if (e.type === 'url_verification')
     {
         context.callbackWaitsForEmptyEventLoop = false
-        callback(new Error("Signature is invalidate!"))
+        callback(null, {
+            statusCode: 200,
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                "challenge": e.challenge
+            })
+        })
+        return;
     }
 
+    // eventを処理する
+    await new SlackEvent(e).process()
+
     callback(null, {
-        isBase64Encoded: false,
         statusCode: 200,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": 'application/json'
         },
-        body: JSON.stringify(await new SlackEvent(post).process())
+        body: JSON.stringify({
+            "result": true
+        })
     })
 }
 
