@@ -106,7 +106,7 @@ functions:
     handler: index.slack
     environment:
       TZ: Asia/Tokyo
-      SLACK_TOKEN: ${env:SLACK_TOKEN}
+      SLACK_ACCESS_TOKEN: ${env:SLACK_ACCESS_TOKEN}
       CHATBOT_APIKEY: ${env:CHATBOT_APIKEY}
       GOOGLE_CALENDER_ID: ${env:GOOGLE_CALENDER_ID}
       GOOGLE_SERVICE_ACCOUNT: ${env:GOOGLE_SERVICE_ACCOUNT}
@@ -116,6 +116,7 @@ functions:
       - http:
           path: bot/munashiukun-slack
           method: post
+          async: true
   alexa:
     name: munashiukun-alexa-skills
     role: ${env:LAMBDA_ROLE_ARN}

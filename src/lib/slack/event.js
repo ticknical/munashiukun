@@ -1,7 +1,8 @@
 "use strict";
 
-import luis           from 'lib/api/luis'
-import chatbot        from 'lib/api/chatbot'
+import luis            from 'lib/api/luis'
+import chatbot         from 'lib/api/chatbot'
+import { postMessage } from 'lib/slack/reply'
 
 /**
  * Slackのイベント処理クラス
@@ -27,22 +28,34 @@ export default class Event
         return new Promise(async (resolve, reject) => {
             try
             {
-                const message = this.event.text.replace(`${this.event.trigger_word} `, "")
+                const message = this.event.event.text.replace(
+                    `<@${this.event.authed_users[0]}> `,
+                    ""
+                )
 
                 this.intent = await luis(message)
 
                 // 雑談
                 if (this.intent.topScoringIntent.intent === 'None')
                 {
-                    resolve(this.response(await chatbot(message)))
+                    postMessage(
+                        this.event.event.channel,
+                        `<@${this.event.event.user}> ${await chatbot(message)}`
+                    )
+
+                    resolve()
+                    return
                 }
 
                 // コマンド実行
                 const skill = await this.getSkill(
-                    this.intent.topScoringIntent.intent
+                    this.intent.topScoringIntent.intent,
+                    message
                 )
 
-                resolve(this.response(await skill.execute()))
+                await skill.execute()
+
+                resolve()
             }
             catch (e)
             {
@@ -56,29 +69,19 @@ export default class Event
      * @param  {String}    取得するスキル名
      * @return {Base} スキルインスタンス
      */
-    async getSkill(name)
+    async getSkill(name, message)
     {
         const Skill = await import(`skills/${name}`)
             .then(res => {
                 return res.Slack
             })
             .catch(err => {
-                resolve(this.response('指定されたスキルが見つかりませんでした...'))
+                postMessage(
+                    this.event.event.channel,
+                    `<@${this.event.event.user}> 指定されたスキルが見つかりませんでした...`
+                )
             })
 
-        return new Skill(this.event, this.intent)
-    }
-
-    /**
-     * SlackへレスポンスするObjectを整形する
-     * @param {String} message
-     * @return {Object}
-     */
-    response(message)
-    {
-        return {
-            text: `@${this.event.user_name} ${message}`,
-            link_names: 1
-        }
+        return new Skill(this.event, message, this.intent)
     }
 }
