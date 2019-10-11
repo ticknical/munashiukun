@@ -16,7 +16,7 @@
   "dependencies": {
     "@line/bot-sdk": "^6.7.1",
     "@slack/client": "^4.12.0",
-    "@slack/web-api": "^5.2.0",
+    "@slack/web-api": "^5.2.1",
     "alexa-sdk": "^1.0.25",
     "axios": "^0.18.1",
     "chatwork-client": "^1.0.12",
