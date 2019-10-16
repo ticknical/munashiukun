@@ -6,7 +6,7 @@ import SlackBase    from "../SlackBase"
 
 import {format} from 'date-fns'
 import jaLocale from 'date-fns/locale/ja'
-import lastDayOfMonth from 'date-fns/last_day_of_month'
+import lastDayOfMonth from 'date-fns/lastDayOfMonth'
 
 import searchReturnDate from 'lib/api/google-calender/searchReturnDate'
 
