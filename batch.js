@@ -4,9 +4,10 @@ import 'babel-polyfill'
 
 import {IncomingWebhook} from '@slack/client'
 
-import searchReturnDate from 'lib/api/google-calender/searchReturnDate'
+import searchReturnDate from 'lib/api/google/calendar/searchReturnDate'
 import {getForecast} from 'lib/api/livedoor/forecast'
 import {format} from 'date-fns'
+import addDays from 'date-fns/addDays'
 import jaLocale from 'date-fns/locale/ja'
 
 const eol = require('eol')
@@ -40,14 +41,14 @@ module.exports.returndate = async (event, context, callback) => {
     const RETURNDATE_ONE_DAY_AGO = 1
 
     const startdate  = new Date(),
-          enddate    = new Date().setDate(new Date().getDate()+7),
+          enddate    = addDays(new Date,7),
           returnDate = await searchReturnDate(startdate, enddate),
           diff       = getDiff(startdate.toDateString(),returnDate)
 
     // 帰社日1週間前の通知
     if (diff === RETURNDATE_ONE_WEEK_AGO)
     {
-        webhook.send(`<!channel> ${format(returnDate, 'M/D（dd）', {locale: jaLocale})}の帰社日まであと1週間です！`)
+        webhook.send(`<!channel> ${format(returnDate, 'M/d（E）', {locale: jaLocale})}の帰社日まであと1週間です！`)
         callback(null, "webhook end.")
         return;
     }

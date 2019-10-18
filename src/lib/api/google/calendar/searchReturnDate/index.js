@@ -2,40 +2,32 @@
 
 import {format} from 'date-fns'
 import jaLocale from 'date-fns/locale/ja'
-import GoogleCalenderAPI from 'node-google-calendar'
+import {google} from 'googleapis'
+import auth from 'lib/api/google/auth'
 
-/**
- * Googleのサービスアカウント情報
- */
-const SERVICE_ACCOUNT = JSON.parse(
-    new Buffer(process.env.GOOGLE_SERVICE_ACCOUNT,'base64').toString()
-)
-
-const GoogleCalendar = new GoogleCalenderAPI({
-    key: SERVICE_ACCOUNT.private_key.replace(/\\n/g, "\n"),
-    serviceAcctId: SERVICE_ACCOUNT.client_email,
-    calendarId: process.env.GOOGLE_CALENDER_ID,
-    timezone: 'UTC+09:00'
+const calendar = google.calendar({
+    version: 'v3',
+    auth: auth(['https://www.googleapis.com/auth/calendar.readonly'])
 })
 
 /**
- * 自然言語処理APIに通す
+ * 指定された期間で帰社日を検索する
  * @param  {Date}    start 検索範囲（開始）
  * @param  {Date}    end   検索範囲（終了）
  * @return {Promise}
  */
-export default (start, end) => {
-    return GoogleCalendar.Events.list(process.env.GOOGLE_CALENDER_ID, {
-    	timeMin: format(start, null, { locale: jaLocale }).replace(/\+00:00/g, '+09:00'),
-    	timeMax: format(end, null, { locale: jaLocale }).replace(/\+00:00/g, '+09:00'),
+export default async (start, end) => {
+    return calendar.events.list({
+        calendarId: process.env.GOOGLE_CALENDER_ID,
+    	timeMin: format(start, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx", { locale: jaLocale }).replace(/\+00:00/g, '+09:00'),
+    	timeMax: format(end, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx", { locale: jaLocale }).replace(/\+00:00/g, '+09:00'),
     	q: '帰社日',
     	singleEvents: true,
-    	orderBy: 'startTime'
+        orderBy: 'startTime',
+        timezone: 'UTC+09:00'
     })
     .then(res => {
-        return new Date(res[0].start.date.replace(/-/g, '/'))
+        return new Date(res.data.items[0].start.date.replace(/-/g, '/'))
     })
-    .catch(e => {
-
-    });
+    .catch(e => {});
 }
