@@ -8,7 +8,7 @@ import {format} from 'date-fns'
 import jaLocale from 'date-fns/locale/ja'
 import lastDayOfMonth from 'date-fns/lastDayOfMonth'
 
-import searchReturnDate from 'lib/api/google-calender/searchReturnDate'
+import searchReturnDate from 'lib/api/google/calendar/searchReturnDate'
 
 /**
  * 次回の帰社日を検索する
@@ -96,7 +96,7 @@ const ReturnDate = (BaseClass) => {
 
             if (returnDate !== null)
             {
-                return this.replyMsg(`${format(returnDate, 'M/D（dd）', { locale: jaLocale })}です！`)
+                return this.replyMsg(`${format(returnDate, 'M/d（E）', { locale: jaLocale })}です！`)
             }
 
             return this.replyMsg('帰社日の日付が取得できませんでした...')

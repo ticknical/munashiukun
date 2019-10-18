@@ -22,8 +22,8 @@
     "chatwork-client": "^1.0.12",
     "date-fns": "^2.4.1",
     "eol": "^0.9.1",
-    "http-build-query": "^0.7.0",
-    "node-google-calendar": "^1.1.1"
+    "googleapis": "^44.0.0",
+    "http-build-query": "^0.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
