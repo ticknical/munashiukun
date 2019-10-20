@@ -2,14 +2,23 @@
 
 import 'babel-polyfill'
 
+import axios from 'axios'
 import {IncomingWebhook} from '@slack/client'
 
 import searchReturnDate from 'lib/api/google/calendar/searchReturnDate'
+import shareBackNumber from 'lib/api/google/sheets/shareBackNumber'
 import {getForecast} from 'lib/api/livedoor/forecast'
+import channelsHistory from 'lib/slack/channelsHistory'
+
 import {format} from 'date-fns'
 import addDays from 'date-fns/addDays'
+import endOfDay from 'date-fns/endOfDay'
+import startOfDay from 'date-fns/startOfDay'
+import startOfYesterday from 'date-fns/startOfYesterday'
+import getUnixTime from 'date-fns/getUnixTime'
 import jaLocale from 'date-fns/locale/ja'
 
+const cheerio = require('cheerio')
 const eol = require('eol')
 
 /**
@@ -69,4 +78,51 @@ module.exports.returndate = async (event, context, callback) => {
 
     callback(null, "webhook end.")
     return
+}
+
+/**
+ * #shareバックナンバー機能のエンドポイント
+ * @param  {Object}   event    リクエスト情報の格納されたオブジェクト
+ * @param  {Object}   context  ランタイム情報の格納されたオブジェクト
+ * @param  {Function} callback callback
+ */
+module.exports.share = async (event, context, callback) => {
+    const yesterday = startOfYesterday()
+
+    const messages = await channelsHistory(
+        process.env.SLACK_SHARE_CHANNEL_ID,
+        getUnixTime(startOfDay(yesterday)),
+        getUnixTime(endOfDay(yesterday))
+    )
+
+    const urls = [];
+    await messages.forEach((message) => {
+        const url_arr = message.text.match(
+            /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/ig
+        )
+
+        if (url_arr === null) {
+            return
+        }
+
+        urls.push(...url_arr)
+    })
+
+    const results = await Promise.all(
+        urls.map((url) => {
+            return axios.get(url)
+        })
+    )
+
+    await shareBackNumber(results.map((result) => {
+        const $ = cheerio.load(result.data, {
+            decodeEntities: false
+        })
+
+        return [
+            format(yesterday, 'yyyy/MM/dd'),
+            result.config.url,
+            $('title').text()
+        ]
+    }))
 }
