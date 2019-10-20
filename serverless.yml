@@ -141,6 +141,19 @@ functions:
       GOOGLE_SERVICE_ACCOUNT: ${env:GOOGLE_SERVICE_ACCOUNT}
     events:
       - schedule: cron(0 0 ? * MON-FRI *) # ここで起動時間を設定UTC
+  share-back-number:
+    name: munashiukun-share-back-number
+    role: ${env:LAMBDA_ROLE_ARN}
+    description: share-back-number
+    handler: batch.share
+    environment:
+      TZ: Asia/Tokyo
+      SLACK_ACCESS_TOKEN: ${env:SLACK_ACCESS_TOKEN}
+      SLACK_SHARE_CHANNEL_ID: ${env:SLACK_SHARE_CHANNEL_ID}
+      SPREADSHEET_SHARE_ID: ${env:SPREADSHEET_SHARE_ID}
+      GOOGLE_SERVICE_ACCOUNT: ${env:GOOGLE_SERVICE_ACCOUNT}
+    events:
+      - schedule: cron(0 0 * * ? *)
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
