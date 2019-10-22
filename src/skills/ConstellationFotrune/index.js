@@ -38,61 +38,60 @@ const ConstellationFotrune = (BaseClass) => {
     return class ConstellationFotrune extends BaseClass {
         async execute()
         {
-            const today = new Date()
-
-            const resultall = await fortune(format(today, 'YYYY/MM/DD')),
-                  constellation= this.intent.entities[0].entity.replace(/ /g, "")
+            const today = format(new Date(), 'yyyy/MM/dd')
+            const resultall = await fortune(today)
+            const constellation= this.intent.entities[0].entity.replace(/ /g, "")
 
             let result;
 
             switch (constellation) {
                 case '牡羊座':
                 case 'おひつじ座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][0]
+                    result = resultall['horoscope'][today][0]
                     break;
                 case '牡牛座':
                 case 'おうし座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][1]
+                    result = resultall['horoscope'][today][1]
                     break;
                 case '双子座':
                 case 'ふたご座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][2]
+                    result = resultall['horoscope'][today][2]
                     break;
                 case '蟹座':
                 case 'かに座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][3]
+                    result = resultall['horoscope'][today][3]
                     break;
                 case '獅子座':
                 case 'しし座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][4]
+                    result = resultall['horoscope'][today][4]
                     break;
                 case '乙女座':
                 case 'おとめ座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][5]
+                    result = resultall['horoscope'][today][5]
                     break;
                 case '天秤座':
                 case 'てんびん座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][6]
+                    result = resultall['horoscope'][today][6]
                     break;
                 case '蠍座':
                 case 'さそり座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][7]
+                    result = resultall['horoscope'][today][7]
                     break;
                 case '射手座':
                 case 'いて座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][8]
+                    result = resultall['horoscope'][today][8]
                     break;
                 case '山羊座':
                 case 'やぎ座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][9]
+                    result = resultall['horoscope'][today][9]
                     break;
                 case '水瓶座':
                 case 'みずがめ座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][10]
+                    result = resultall['horoscope'][today][10]
                     break;
                 case '魚座':
                 case 'うお座':
-                    result = resultall['horoscope'][format(today, 'YYYY/MM/DD')][11]
+                    result = resultall['horoscope'][today][11]
                     break;
                 default:
                     return this.replyMsg('どの星座か分かりませんでした...')
