@@ -3,7 +3,7 @@
 import 'babel-polyfill'
 
 import axios from 'axios'
-import {IncomingWebhook} from '@slack/client'
+import {IncomingWebhook} from '@slack/webhook'
 
 import searchReturnDate from 'lib/api/google/calendar/searchReturnDate'
 import shareBackNumber from 'lib/api/google/sheets/shareBackNumber'
