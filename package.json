@@ -23,7 +23,7 @@
     "cheerio": "^1.0.0-rc.3",
     "date-fns": "^2.6.0",
     "eol": "^0.9.1",
-    "googleapis": "^44.0.0",
+    "googleapis": "^46.0.0",
     "http-build-query": "^0.7.0"
   },
   "devDependencies": {
