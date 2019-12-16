@@ -35,7 +35,7 @@
     "dotenv-export": "^2.0.0",
     "serverless": "^1.56.1",
     "serverless-webpack": "^5.3.1",
-    "webpack": "^4.41.2"
+    "webpack": "^4.41.3"
   },
   "private": true
 }
