@@ -14,7 +14,7 @@
     "src": "./src"
   },
   "dependencies": {
-    "@line/bot-sdk": "^6.8.2",
+    "@line/bot-sdk": "^6.8.4",
     "@slack/web-api": "^5.7.0",
     "@slack/webhook": "^5.0.2",
     "alexa-sdk": "^1.0.25",
