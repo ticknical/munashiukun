@@ -24,7 +24,7 @@
     "date-fns": "^2.9.0",
     "eol": "^0.9.1",
     "excel-lettering": "^1.0.0",
-    "googleapis": "^47.0.0",
+    "googleapis": "^59.0.0",
     "http-build-query": "^0.7.0"
   },
   "devDependencies": {
