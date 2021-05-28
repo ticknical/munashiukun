@@ -21,7 +21,7 @@
     "axios": "^0.19.1",
     "chatwork-client": "^1.0.12",
     "cheerio": "^1.0.0-rc.3",
-    "date-fns": "^2.9.0",
+    "date-fns": "^2.22.1",
     "eol": "^0.9.1",
     "excel-lettering": "^1.0.0",
     "googleapis": "^47.0.0",
