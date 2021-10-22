@@ -4,9 +4,10 @@
   "description": "munashiukun",
   "main": "index.js",
   "scripts": {
-    "invoke": "dotenv-export >> ./.env_export && source ./.env_export && rm -rf ./.env_export && serverless invoke local",
-    "deploy": "dotenv-export >> ./.env_export && source ./.env_export && rm -rf ./.env_export && serverless deploy",
-    "deploy:function": "dotenv-export >> ./.env_export && source ./.env_export && rm -rf ./.env_export && serverless deploy function -f"
+    "invoke": "dotenv-export >> ./.env_export && . ./.env_export && rm -rf ./.env_export && serverless invoke local",
+    "deploy": "dotenv-export >> ./.env_export && . ./.env_export && rm -rf ./.env_export && serverless deploy",
+    "deploy:function": "dotenv-export >> ./.env_export && . ./.env_export && rm -rf ./.env_export && serverless deploy function -f",
+    "remove": "serverless remove"
   },
   "author": "Tick <ticknical@perfectdark.jp>",
   "license": "Apache-2.0",
